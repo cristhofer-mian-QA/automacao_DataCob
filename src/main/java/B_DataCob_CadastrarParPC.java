@@ -1,0 +1,626 @@
+import org.junit.Before;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+@FixMethodOrder (MethodSorters.NAME_ASCENDING)
+public class B_DataCob_CadastrarParPC { 
+	//regra de atualização de dívida PADRÃO
+	
+	WebDriver driver;
+	Variaveis_B_Parametros_PC variaveis;
+	Variáveis_Login login;
+	_Page_Menu_Superior menu;
+	_Page_Menu_Parametros subMenu;
+			
+	@Before
+	public void iniciarSistema() throws InterruptedException {
+		driver = new FirefoxDriver();
+			Thread.sleep(7000);
+		variaveis = new Variaveis_B_Parametros_PC (driver);
+		login = new Variáveis_Login (driver);
+		menu = new _Page_Menu_Superior (driver);
+		subMenu = new _Page_Menu_Parametros (driver);
+		
+		login.login();
+		menu.clicarParametros();
+		menu.clicarVisualizarParâmetros();
+		variaveis.esperarCssSelector("h1.titulo");
+		subMenu.clicarMenuOpções();;
+		subMenu.clicarSubMenuCálculo();
+		subMenu.clicarSubMenuCálculoPC();
+	}
+	
+	
+	@Test  //regra de atualização de dívida PADRÃO
+	public void A_cadastrarParâmetroCálculoPCNenhum() throws InterruptedException {
+		variaveis.esperarId("cadastra");
+		variaveis.clicarBotãoCadastrar("cadastra");
+		variaveis.esperarCssSelector(".barra_top > h1:nth-child(1)");
+		variaveis.inserirDescrição("inputPadrao", variaveis.descricao);
+		variaveis.clicarMaiorDesconto("idmaiorDesconto");
+		variaveis.clicarQuitaçãoPAdrão("idQuitacaoPadrao");
+		variaveis.esperarCssSelector(".caixa_bottom > a:nth-child(2)");
+		variaveis.clicarOkXpath("//*[@id=\'msgBoxContent\']/div/div[2]/a[2]");
+		variaveis.esperarXpath("//*[@id=\'gridCalculo\']/table/tbody/tr[2]/td/div/div/table/tbody/tr[2]");
+		variaveis.tabelaCalculoPC(variaveis.descricao);
+			Thread.sleep(2000);
+		variaveis.clicarBotãoParâmetroCálculoPC("modificaNome");
+		variaveis.esperarCssSelector("a.selected > ins:nth-child(2)");
+		
+		//-----------------tipo de cálculo normal - quitação "Nenhum"-----------------//
+		
+		variaveis.clicarAbaTipoCálculo(".selected");
+			Thread.sleep(1000);
+		variaveis.clicarBotãoAdicionar("adciona");
+		variaveis.esperarId("quitacaoNenh");
+		variaveis.clicarTipoCálculo ("tipoNormal");
+		variaveis.clicarBoletagem("ckBoletagem");
+		variaveis.clicarDataPact("ckDatapact");
+		variaveis.clicarApi("ckUsoApi");
+		variaveis.selecionarAtualizaçãoPrincipal("idIndice", 0);
+		variaveis.inserirDiasAtualizaçãoPrincipal("diasIndice", "0");
+		variaveis.selecionarConversãoParaReal("idIndiceConversaoMoeda", 0);
+		variaveis.selecionarMoeda("listaMoedas", "REAL");
+		variaveis.clicarVencimento("baseVencimento");
+		variaveis.selecionarQuitaçãoNenhum("quitacaoNenh");
+		variaveis.inserirDescrição("descricao", variaveis.descricaoNenhum);
+		variaveis.clicarAtivo();
+		variaveis.inserirDataInicio("dtInicio", variaveis.dataInicio);
+		variaveis.inserirDataFim("dtFinalCampanha", variaveis.dataFinal);
+		variaveis.nãoClicarReterComissão();
+		variaveis.nãoClicarReterHonorário();
+		variaveis.inserirDiasMínimos("idDiasVencimentoMinimo", variaveis.vencimentoMínimo);
+		variaveis.inserirDiasMáximos("idDiasVencimentoMaximo", variaveis.vencimentoMáximo);
+		variaveis.clicarOkID("confirmaParametro");
+		variaveis.esperarCssSelector(".textoAlerta");
+		String mensagemSucesso = variaveis.mensagem(".textoAlerta");
+		variaveis.validarMensagem("INSERIDO com sucesso!", mensagemSucesso);
+		variaveis.clicarOkXpath("//*[@id=\'msgBoxContent\']/div/div[2]/a");
+		
+		//-----------------tipo de cálculo normal - quitação "Atualização"-----------------//
+		
+			Thread.sleep(2000);	
+		variaveis.clicarAbaTipoCálculo(".selected");
+		variaveis.clicarBotãoAdicionar("adciona");
+		variaveis.esperarId("quitacaoNenh");
+		variaveis.clicarTipoCálculo ("tipoNormal");
+		variaveis.clicarBoletagem("ckBoletagem");
+		variaveis.clicarDataPact("ckDatapact");
+		variaveis.clicarApi("ckUsoApi");
+		variaveis.selecionarAtualizaçãoPrincipal("idIndice", 0);
+		variaveis.inserirDiasAtualizaçãoPrincipal("diasIndice", "0");
+		variaveis.selecionarConversãoParaReal("idIndiceConversaoMoeda", 0);
+		variaveis.selecionarMoeda("listaMoedas", "REAL");
+		variaveis.clicarVencimento("baseVencimento");
+		variaveis.selecionarQuitaçãoAtualização("quitacaoAtual");
+		variaveis.inserirDescrição("descricao", variaveis.descricaoAtualizacao);
+		variaveis.clicarAtivo();
+		variaveis.inserirDataInicio("dtInicio", variaveis.dataInicio);
+		variaveis.inserirDataFim("dtFinalCampanha", variaveis.dataFinal);
+		variaveis.nãoClicarReterComissão();
+		variaveis.nãoClicarReterHonorário();
+		variaveis.inserirDiasMínimos("idDiasVencimentoMinimo", variaveis.vencimentoMínimo);
+		variaveis.inserirDiasMáximos("idDiasVencimentoMaximo", variaveis.vencimentoMáximo);
+		variaveis.clicarOkID("confirmaParametro");
+		variaveis.esperarCssSelector(".textoAlerta");
+		mensagemSucesso = variaveis.mensagem(".textoAlerta");
+		variaveis.validarMensagem("INSERIDO com sucesso!", mensagemSucesso);
+		variaveis.clicarOkXpath("//*[@id=\'msgBoxContent\']/div/div[2]/a");		
+		
+		//-----------------tipo de cálculo normal - quitação "Quitação"-----------------//
+		
+			Thread.sleep(2000);	
+		variaveis.clicarAbaTipoCálculo(".selected");
+		variaveis.clicarBotãoAdicionar("adciona");
+		variaveis.esperarId("quitacaoNenh");
+		variaveis.clicarTipoCálculo ("tipoNormal");
+		variaveis.clicarBoletagem("ckBoletagem");
+		variaveis.clicarDataPact("ckDatapact");
+		variaveis.clicarApi("ckUsoApi");
+		variaveis.selecionarAtualizaçãoPrincipal("idIndice", 0);
+		variaveis.inserirDiasAtualizaçãoPrincipal("diasIndice", "0");
+		variaveis.selecionarConversãoParaReal("idIndiceConversaoMoeda", 0);
+		variaveis.selecionarMoeda("listaMoedas", "REAL");
+		variaveis.clicarVencimento("baseVencimento");
+		variaveis.selecionarQuitaçãoQuitação("quitacaoQuit");
+		variaveis.inserirDescrição("descricao", variaveis.descricaoQuitacao);
+		variaveis.clicarAtivo();
+		variaveis.inserirDataInicio("dtInicio", variaveis.dataInicio);
+		variaveis.inserirDataFim("dtFinalCampanha", variaveis.dataFinal);
+		variaveis.nãoClicarReterComissão();
+		variaveis.nãoClicarReterHonorário();
+		variaveis.inserirDiasMínimos("idDiasVencimentoMinimo", variaveis.vencimentoMínimo);
+		variaveis.inserirDiasMáximos("idDiasVencimentoMaximo", variaveis.vencimentoMáximo);
+		variaveis.clicarOkID("confirmaParametro");
+		variaveis.esperarCssSelector(".textoAlerta");
+		mensagemSucesso = variaveis.mensagem(".textoAlerta");
+		variaveis.validarMensagem("INSERIDO com sucesso!", mensagemSucesso);
+		variaveis.clicarOkXpath("//*[@id=\'msgBoxContent\']/div/div[2]/a");	
+	}
+	
+	@Test
+	public void B_cadastraFaixaCalculoNenhum_O_10() throws InterruptedException {
+		variaveis.esperarId("modificaNome");
+		variaveis.tabelaCalculoPC(variaveis.descricao);
+			Thread.sleep(1000);
+		variaveis.clicarBotãoParâmetroCálculoPC("modificaNome");
+			Thread.sleep(3000);
+		variaveis.clicarAbaFaixasDeCálculo("//*[@id=\'targetParametros\']/ul/li[2]/a");
+		variaveis.pesquisarDescrição("cmpProcurar", "btnProcurar", variaveis.descricaoNenhum);
+		variaveis.clicarPrimeiroItemTabela("//*[@id=\'grid\']/table/tbody/tr[2]/td/div/div/table/tbody/tr[2]");
+		variaveis.clicarBotãoAdicionar("adciona");
+		variaveis.diasDe("diasDeFaixa", variaveis.de0);
+		variaveis.diasAte("diasAteFaixa", variaveis.ate10);
+		variaveis.inserirPMT("quantidadePmt", variaveis.PMT);
+		variaveis.inserirFaseAtualização("codigoFaixa");
+		variaveis.clicarNãoUtilizarDeságio("NUtilizarDesagio");
+		variaveis.inserirDescontoPrincipal("percentualFaixa", variaveis.descontoPrincipal);
+		variaveis.clicarDescontoPrincipal("principalFaixa");
+		variaveis.inserirDescontoPrincipalVincenda("percentualFaixaVincenda", variaveis.descontoPrincipalVincenda);
+		variaveis.desmarcarDescCustas("descCustasFaixa");
+		variaveis.desmarcarDefFaixaRisco("defFaixaRiscoFaixa");
+		variaveis.clicarJurosMensal("mensalFaixa");
+		variaveis.desmarcarUsarTaxaContrato("jurosUsarTxContrato");
+		variaveis.inserirJuros("percJurosFaixa", variaveis.juros);
+		variaveis.inserirDiasIsentosJuros ("diasJurosFaixa", variaveis.diasIsentosJuros);
+		variaveis.inserirDescontosJuros("descJurosFaixa", variaveis.descontoJuros);
+		variaveis.clicarLinear("linearFaixa");
+		variaveis.inserirAtrasoMinimoParcelas("atrasoMinimoNegociacao", variaveis.atrasoMínimoParcelas);
+		variaveis.selecionarJurosSobrePrincipal("jurosSobreFaixa", "P");
+		variaveis.desmarcarUsarTaxaContrato("multaUsarTxContrato");
+		variaveis.inserirMulta("percMultaFaixa", variaveis.multa);
+		variaveis.inserirDiasIsentosMulta("diasMultaFaixa", variaveis.diasIsentosMulta);
+		variaveis.inserirDescontosMulta("descMultaFaixa", variaveis.descontoMulta);
+		variaveis.selecionarMultaSobrePrincipal("multaSobreFaixa", "P");
+		variaveis.clicarComissãoMensalParmanencia("mensalTaxaFaixa");
+		variaveis.desmarcarUsarTaxaContrato("moraUsarTxContrato");
+		variaveis.inserirComissãoPermanencia("percComissaoFaixa", variaveis.comissaoPermanencia);
+		variaveis.inserirDiasIsentosComissão ("diasComissaoFaixa", variaveis.diasIsentoComissao);
+		variaveis.inserirDescontoComissão("descComissaoFaixa", variaveis.descontoComissao);
+		variaveis.clicarLinear("linearComissaoFaixa");
+		variaveis.selecionarComissãoSobrePrincipal("taxaSobreFaixa", "P");
+		variaveis.inserirHonoráriosVencidas("percVencidaHonorarioFaixa", variaveis.honorarioVencida);
+		variaveis.inserirDiasIsentosHonorários("diasHonorarioFaixa", variaveis.diasIsentoHonorario);
+		variaveis.inserirHonoráriosVincendas("percVincendaHonorarioFaixa", variaveis.honorarioVincenda);
+		variaveis.inserirMínimaHonorário("percDescHono", variaveis.minima);
+		variaveis.clicarOkID("confirmaFaixaCalculo");
+		variaveis.esperarCssSelector(".textoAlerta");
+		String mensagemSucesso = variaveis.mensagem(".textoAlerta");
+		variaveis.validarMensagem("INSERIDO com sucesso!", mensagemSucesso);
+		variaveis.clicarOkXpath("//*[@id=\'msgBoxContent\']/div/div[2]/a");
+		driver.quit();
+	}
+	
+	@Test
+	public void C_cadastraFaixaCalculoNenhum_11_30() throws InterruptedException {
+		variaveis.esperarId("modificaNome");
+		variaveis.tabelaCalculoPC(variaveis.descricao);
+			Thread.sleep(1000);
+		variaveis.clicarBotãoParâmetroCálculoPC("modificaNome");
+		variaveis.esperarCssSelector("#targetParametros > ul > li:nth-child(2) > a");
+			Thread.sleep(3000);
+		variaveis.clicarAbaFaixasDeCálculo("//*[@id=\'targetParametros\']/ul/li[2]");
+		variaveis.pesquisarDescrição("cmpProcurar", "btnProcurar", variaveis.descricaoNenhum);
+		variaveis.clicarPrimeiroItemTabela("//*[@id=\'grid\']/table/tbody/tr[2]/td/div/div/table/tbody/tr[2]");
+		variaveis.clicarBotãoAdicionar("adciona");
+		variaveis.diasDe("diasDeFaixa", variaveis.de11);
+		variaveis.diasAte("diasAteFaixa", variaveis.ate30);
+		variaveis.inserirPMT("quantidadePmt", variaveis.PMT2);
+		variaveis.inserirFaseAtualização("codigoFaixa");
+		variaveis.clicarNãoUtilizarDeságio("NUtilizarDesagio");
+		variaveis.inserirDescontoPrincipal("percentualFaixa", variaveis.descontoPrincipal2);
+		variaveis.clicarDescontoPrincipal("principalFaixa");
+		variaveis.inserirDescontoPrincipalVincenda("percentualFaixaVincenda", variaveis.descontoPrincipalVincenda2);
+		variaveis.desmarcarDescCustas("descCustasFaixa");
+		variaveis.desmarcarDefFaixaRisco("defFaixaRiscoFaixa");
+		variaveis.clicarJurosMensal("mensalFaixa");
+		variaveis.desmarcarUsarTaxaContrato("jurosUsarTxContrato");
+		variaveis.inserirJuros("percJurosFaixa", variaveis.juros2);
+		variaveis.inserirDiasIsentosJuros ("diasJurosFaixa", variaveis.diasIsentosJuros2);
+		variaveis.inserirDescontosJuros("descJurosFaixa", variaveis.descontoJuros2);
+		variaveis.clicarLinear("linearFaixa");
+		variaveis.inserirAtrasoMinimoParcelas("atrasoMinimoNegociacao", variaveis.atrasoMínimoParcelas2);
+		variaveis.selecionarJurosSobrePrincipal("jurosSobreFaixa", "P");
+		variaveis.desmarcarUsarTaxaContrato("multaUsarTxContrato");
+		variaveis.inserirMulta("percMultaFaixa", variaveis.multa2);
+		variaveis.inserirDiasIsentosMulta("diasMultaFaixa", variaveis.diasIsentosMulta2);
+		variaveis.inserirDescontosMulta("descMultaFaixa", variaveis.descontoMulta2);
+		variaveis.selecionarMultaSobrePrincipal("multaSobreFaixa", "P");
+		variaveis.clicarComissãoMensalParmanencia("mensalTaxaFaixa");
+		variaveis.desmarcarUsarTaxaContrato("moraUsarTxContrato");
+		variaveis.inserirComissãoPermanencia("percComissaoFaixa", variaveis.comissaoPermanencia2);
+		variaveis.inserirDiasIsentosComissão ("diasComissaoFaixa", variaveis.diasIsentoComissao2);
+		variaveis.inserirDescontoComissão("descComissaoFaixa", variaveis.descontoComissao2);
+		variaveis.clicarLinear("linearComissaoFaixa");
+		variaveis.selecionarComissãoSobrePrincipal("taxaSobreFaixa", "P");
+		variaveis.inserirHonoráriosVencidas("percVencidaHonorarioFaixa", variaveis.honorarioVencida2);
+		variaveis.inserirDiasIsentosHonorários("diasHonorarioFaixa", variaveis.diasIsentoHonorario2);
+		variaveis.inserirHonoráriosVincendas("percVincendaHonorarioFaixa", variaveis.honorarioVincenda2);
+		variaveis.inserirMínimaHonorário("percDescHono", variaveis.minima2);
+		variaveis.clicarOkID("confirmaFaixaCalculo");
+		variaveis.esperarCssSelector(".textoAlerta");
+		String mensagemSucesso = variaveis.mensagem(".textoAlerta");
+		variaveis.validarMensagem("INSERIDO com sucesso!", mensagemSucesso);
+		variaveis.clicarOkXpath("//*[@id=\'msgBoxContent\']/div/div[2]/a");
+		driver.quit();
+	}
+	
+	@Test
+	public void D_cadastraFaixaCalculoNenhum_31_99999999() throws InterruptedException {
+		variaveis.esperarId("modificaNome");
+		variaveis.tabelaCalculoPC(variaveis.descricao);
+			Thread.sleep(1000);
+		variaveis.clicarBotãoParâmetroCálculoPC("modificaNome");
+		variaveis.esperarCssSelector("#targetParametros > ul > li:nth-child(2) > a");
+			Thread.sleep(3000);
+		variaveis.clicarAbaFaixasDeCálculo("//*[@id=\'targetParametros\']/ul/li[2]/a");
+		variaveis.pesquisarDescrição("cmpProcurar", "btnProcurar", variaveis.descricaoNenhum);
+		variaveis.clicarPrimeiroItemTabela("//*[@id=\'grid\']/table/tbody/tr[2]/td/div/div/table/tbody/tr[2]");
+		variaveis.clicarBotãoAdicionar("adciona");
+		variaveis.diasDe("diasDeFaixa", variaveis.de31);
+		variaveis.diasAte("diasAteFaixa", variaveis.ate99999999);
+		variaveis.inserirPMT("quantidadePmt", variaveis.PMT3);
+		variaveis.inserirFaseAtualização("codigoFaixa");
+		variaveis.clicarNãoUtilizarDeságio("NUtilizarDesagio");
+		variaveis.inserirDescontoPrincipal("percentualFaixa", variaveis.descontoPrincipal3);
+		variaveis.clicarDescontoPrincipal("principalFaixa");
+		variaveis.inserirDescontoPrincipalVincenda("percentualFaixaVincenda", variaveis.descontoPrincipalVincenda3);
+		variaveis.desmarcarDescCustas("descCustasFaixa");
+		variaveis.desmarcarDefFaixaRisco("defFaixaRiscoFaixa");
+		variaveis.clicarJurosMensal("mensalFaixa");
+		variaveis.desmarcarUsarTaxaContrato("jurosUsarTxContrato");
+		variaveis.inserirJuros("percJurosFaixa", variaveis.juros3);
+		variaveis.inserirDiasIsentosJuros ("diasJurosFaixa", variaveis.diasIsentosJuros3);
+		variaveis.inserirDescontosJuros("descJurosFaixa", variaveis.descontoJuros3);
+		variaveis.clicarLinear("linearFaixa");
+		variaveis.inserirAtrasoMinimoParcelas("atrasoMinimoNegociacao", variaveis.atrasoMínimoParcelas3);
+		variaveis.selecionarJurosSobrePrincipal("jurosSobreFaixa", "P");
+		variaveis.desmarcarUsarTaxaContrato("multaUsarTxContrato");
+		variaveis.inserirMulta("percMultaFaixa", variaveis.multa3);
+		variaveis.inserirDiasIsentosMulta("diasMultaFaixa", variaveis.diasIsentosMulta3);
+		variaveis.inserirDescontosMulta("descMultaFaixa", variaveis.descontoMulta3);
+		variaveis.selecionarMultaSobrePrincipal("multaSobreFaixa", "P");
+		variaveis.clicarComissãoMensalParmanencia("mensalTaxaFaixa");
+		variaveis.desmarcarUsarTaxaContrato("moraUsarTxContrato");
+		variaveis.inserirComissãoPermanencia("percComissaoFaixa", variaveis.comissaoPermanencia3);
+		variaveis.inserirDiasIsentosComissão ("diasComissaoFaixa", variaveis.diasIsentoComissao3);
+		variaveis.inserirDescontoComissão("descComissaoFaixa", variaveis.descontoComissao3);
+		variaveis.clicarLinear("linearComissaoFaixa");
+		variaveis.selecionarComissãoSobrePrincipal("taxaSobreFaixa", "P");
+		variaveis.inserirHonoráriosVencidas("percVencidaHonorarioFaixa", variaveis.honorarioVencida3);
+		variaveis.inserirDiasIsentosHonorários("diasHonorarioFaixa", variaveis.diasIsentoHonorario3);
+		variaveis.inserirHonoráriosVincendas("percVincendaHonorarioFaixa", variaveis.honorarioVincenda3);
+		variaveis.inserirMínimaHonorário("percDescHono", variaveis.minima3);
+		variaveis.clicarOkID("confirmaFaixaCalculo");
+		variaveis.esperarCssSelector(".textoAlerta");
+		String mensagemSucesso = variaveis.mensagem(".textoAlerta");
+		variaveis.validarMensagem("INSERIDO com sucesso!", mensagemSucesso);
+		variaveis.clicarOkXpath("//*[@id=\'msgBoxContent\']/div/div[2]/a");
+		driver.quit();
+	}
+	
+	@Test
+	public void E_cadastraFaixaCalculoAtualizacao_O_10() throws InterruptedException {
+		variaveis.esperarId("modificaNome");
+		variaveis.tabelaCalculoPC(variaveis.descricao);
+			Thread.sleep(1000);
+		variaveis.clicarBotãoParâmetroCálculoPC("modificaNome");
+			Thread.sleep(3000);
+		variaveis.clicarAbaFaixasDeCálculo("//*[@id=\'targetParametros\']/ul/li[2]/a");
+		variaveis.pesquisarDescrição("cmpProcurar", "btnProcurar", variaveis.descricaoAtualizacao);
+		variaveis.clicarPrimeiroItemTabela("//*[@id=\'grid\']/table/tbody/tr[2]/td/div/div/table/tbody/tr[2]");
+		variaveis.clicarBotãoAdicionar("adciona");
+		variaveis.diasDe("diasDeFaixa", variaveis.de0);
+		variaveis.diasAte("diasAteFaixa", variaveis.ate10);
+		variaveis.inserirPMT("quantidadePmt", variaveis.PMT);
+		variaveis.inserirFaseAtualização("codigoFaixa");
+		variaveis.clicarNãoUtilizarDeságio("NUtilizarDesagio");
+		variaveis.inserirDescontoPrincipal("percentualFaixa", variaveis.descontoPrincipal);
+		variaveis.clicarDescontoPrincipal("principalFaixa");
+		variaveis.inserirDescontoPrincipalVincenda("percentualFaixaVincenda", variaveis.descontoPrincipalVincenda);
+		variaveis.desmarcarDescCustas("descCustasFaixa");
+		variaveis.desmarcarDefFaixaRisco("defFaixaRiscoFaixa");
+		variaveis.clicarJurosMensal("mensalFaixa");
+		variaveis.desmarcarUsarTaxaContrato("jurosUsarTxContrato");
+		variaveis.inserirJuros("percJurosFaixa", variaveis.juros);
+		variaveis.inserirDiasIsentosJuros ("diasJurosFaixa", variaveis.diasIsentosJuros);
+		variaveis.inserirDescontosJuros("descJurosFaixa", variaveis.descontoJuros);
+		variaveis.clicarLinear("linearFaixa");
+		variaveis.inserirAtrasoMinimoParcelas("atrasoMinimoNegociacao", variaveis.atrasoMínimoParcelas);
+		variaveis.selecionarJurosSobrePrincipal("jurosSobreFaixa", "P");
+		variaveis.desmarcarUsarTaxaContrato("multaUsarTxContrato");
+		variaveis.inserirMulta("percMultaFaixa", variaveis.multa);
+		variaveis.inserirDiasIsentosMulta("diasMultaFaixa", variaveis.diasIsentosMulta);
+		variaveis.inserirDescontosMulta("descMultaFaixa", variaveis.descontoMulta);
+		variaveis.selecionarMultaSobrePrincipal("multaSobreFaixa", "P");
+		variaveis.clicarComissãoMensalParmanencia("mensalTaxaFaixa");
+		variaveis.desmarcarUsarTaxaContrato("moraUsarTxContrato");
+		variaveis.inserirComissãoPermanencia("percComissaoFaixa", variaveis.comissaoPermanencia);
+		variaveis.inserirDiasIsentosComissão ("diasComissaoFaixa", variaveis.diasIsentoComissao);
+		variaveis.inserirDescontoComissão("descComissaoFaixa", variaveis.descontoComissao);
+		variaveis.clicarLinear("linearComissaoFaixa");
+		variaveis.selecionarComissãoSobrePrincipal("taxaSobreFaixa", "P");
+		variaveis.inserirHonoráriosVencidas("percVencidaHonorarioFaixa", variaveis.honorarioVencida);
+		variaveis.inserirDiasIsentosHonorários("diasHonorarioFaixa", variaveis.diasIsentoHonorario);
+		variaveis.inserirHonoráriosVincendas("percVincendaHonorarioFaixa", variaveis.honorarioVincenda);
+		variaveis.inserirMínimaHonorário("percDescHono", variaveis.minima);
+		variaveis.clicarOkID("confirmaFaixaCalculo");
+		variaveis.esperarCssSelector(".textoAlerta");
+		String mensagemSucesso = variaveis.mensagem(".textoAlerta");
+		variaveis.validarMensagem("INSERIDO com sucesso!", mensagemSucesso);
+		variaveis.clicarOkXpath("//*[@id=\'msgBoxContent\']/div/div[2]/a");
+		driver.quit();
+	}
+	
+	@Test
+	public void F_cadastraFaixaCalculoAtualizacao_11_30() throws InterruptedException {
+		variaveis.esperarId("modificaNome");
+		variaveis.tabelaCalculoPC(variaveis.descricao);
+			Thread.sleep(1000);
+		variaveis.clicarBotãoParâmetroCálculoPC("modificaNome");
+		variaveis.esperarCssSelector("#targetParametros > ul > li:nth-child(2) > a");
+			Thread.sleep(3000);
+		variaveis.clicarAbaFaixasDeCálculo("//*[@id=\'targetParametros\']/ul/li[2]");
+		variaveis.pesquisarDescrição("cmpProcurar", "btnProcurar", variaveis.descricaoAtualizacao);
+		variaveis.clicarPrimeiroItemTabela("//*[@id=\'grid\']/table/tbody/tr[2]/td/div/div/table/tbody/tr[2]");
+		variaveis.clicarBotãoAdicionar("adciona");
+		variaveis.diasDe("diasDeFaixa", variaveis.de11);
+		variaveis.diasAte("diasAteFaixa", variaveis.ate30);
+		variaveis.inserirPMT("quantidadePmt", variaveis.PMT2);
+		variaveis.inserirFaseAtualização("codigoFaixa");
+		variaveis.clicarNãoUtilizarDeságio("NUtilizarDesagio");
+		variaveis.inserirDescontoPrincipal("percentualFaixa", variaveis.descontoPrincipal2);
+		variaveis.clicarDescontoPrincipal("principalFaixa");
+		variaveis.inserirDescontoPrincipalVincenda("percentualFaixaVincenda", variaveis.descontoPrincipalVincenda2);
+		variaveis.desmarcarDescCustas("descCustasFaixa");
+		variaveis.desmarcarDefFaixaRisco("defFaixaRiscoFaixa");
+		variaveis.clicarJurosMensal("mensalFaixa");
+		variaveis.desmarcarUsarTaxaContrato("jurosUsarTxContrato");
+		variaveis.inserirJuros("percJurosFaixa", variaveis.juros2);
+		variaveis.inserirDiasIsentosJuros ("diasJurosFaixa", variaveis.diasIsentosJuros2);
+		variaveis.inserirDescontosJuros("descJurosFaixa", variaveis.descontoJuros2);
+		variaveis.clicarLinear("linearFaixa");
+		variaveis.inserirAtrasoMinimoParcelas("atrasoMinimoNegociacao", variaveis.atrasoMínimoParcelas2);
+		variaveis.selecionarJurosSobrePrincipal("jurosSobreFaixa", "P");
+		variaveis.desmarcarUsarTaxaContrato("multaUsarTxContrato");
+		variaveis.inserirMulta("percMultaFaixa", variaveis.multa2);
+		variaveis.inserirDiasIsentosMulta("diasMultaFaixa", variaveis.diasIsentosMulta2);
+		variaveis.inserirDescontosMulta("descMultaFaixa", variaveis.descontoMulta2);
+		variaveis.selecionarMultaSobrePrincipal("multaSobreFaixa", "P");
+		variaveis.clicarComissãoMensalParmanencia("mensalTaxaFaixa");
+		variaveis.desmarcarUsarTaxaContrato("moraUsarTxContrato");
+		variaveis.inserirComissãoPermanencia("percComissaoFaixa", variaveis.comissaoPermanencia2);
+		variaveis.inserirDiasIsentosComissão ("diasComissaoFaixa", variaveis.diasIsentoComissao2);
+		variaveis.inserirDescontoComissão("descComissaoFaixa", variaveis.descontoComissao2);
+		variaveis.clicarLinear("linearComissaoFaixa");
+		variaveis.selecionarComissãoSobrePrincipal("taxaSobreFaixa", "P");
+		variaveis.inserirHonoráriosVencidas("percVencidaHonorarioFaixa", variaveis.honorarioVencida2);
+		variaveis.inserirDiasIsentosHonorários("diasHonorarioFaixa", variaveis.diasIsentoHonorario2);
+		variaveis.inserirHonoráriosVincendas("percVincendaHonorarioFaixa", variaveis.honorarioVincenda2);
+		variaveis.inserirMínimaHonorário("percDescHono", variaveis.minima2);
+		variaveis.clicarOkID("confirmaFaixaCalculo");
+		variaveis.esperarCssSelector(".textoAlerta");
+		String mensagemSucesso = variaveis.mensagem(".textoAlerta");
+		variaveis.validarMensagem("INSERIDO com sucesso!", mensagemSucesso);
+		variaveis.clicarOkXpath("//*[@id=\'msgBoxContent\']/div/div[2]/a");
+		driver.quit();
+	}
+	
+	@Test
+	public void G_cadastraFaixaCalculoAtualiza_31_99999999() throws InterruptedException {
+		variaveis.esperarId("modificaNome");
+		variaveis.tabelaCalculoPC(variaveis.descricao);
+			Thread.sleep(1000);
+		variaveis.clicarBotãoParâmetroCálculoPC("modificaNome");
+		variaveis.esperarCssSelector("#targetParametros > ul > li:nth-child(2) > a");
+			Thread.sleep(3000);
+		variaveis.clicarAbaFaixasDeCálculo("//*[@id=\'targetParametros\']/ul/li[2]/a");
+		variaveis.pesquisarDescrição("cmpProcurar", "btnProcurar", variaveis.descricaoAtualizacao);
+		variaveis.clicarPrimeiroItemTabela("//*[@id=\'grid\']/table/tbody/tr[2]/td/div/div/table/tbody/tr[2]");
+		variaveis.clicarBotãoAdicionar("adciona");
+		variaveis.diasDe("diasDeFaixa", variaveis.de31);
+		variaveis.diasAte("diasAteFaixa", variaveis.ate99999999);
+		variaveis.inserirPMT("quantidadePmt", variaveis.PMT3);
+		variaveis.inserirFaseAtualização("codigoFaixa");
+		variaveis.clicarNãoUtilizarDeságio("NUtilizarDesagio");
+		variaveis.inserirDescontoPrincipal("percentualFaixa", variaveis.descontoPrincipal3);
+		variaveis.clicarDescontoPrincipal("principalFaixa");
+		variaveis.inserirDescontoPrincipalVincenda("percentualFaixaVincenda", variaveis.descontoPrincipalVincenda3);
+		variaveis.desmarcarDescCustas("descCustasFaixa");
+		variaveis.desmarcarDefFaixaRisco("defFaixaRiscoFaixa");
+		variaveis.clicarJurosMensal("mensalFaixa");
+		variaveis.desmarcarUsarTaxaContrato("jurosUsarTxContrato");
+		variaveis.inserirJuros("percJurosFaixa", variaveis.juros3);
+		variaveis.inserirDiasIsentosJuros ("diasJurosFaixa", variaveis.diasIsentosJuros3);
+		variaveis.inserirDescontosJuros("descJurosFaixa", variaveis.descontoJuros3);
+		variaveis.clicarLinear("linearFaixa");
+		variaveis.inserirAtrasoMinimoParcelas("atrasoMinimoNegociacao", variaveis.atrasoMínimoParcelas3);
+		variaveis.selecionarJurosSobrePrincipal("jurosSobreFaixa", "P");
+		variaveis.desmarcarUsarTaxaContrato("multaUsarTxContrato");
+		variaveis.inserirMulta("percMultaFaixa", variaveis.multa3);
+		variaveis.inserirDiasIsentosMulta("diasMultaFaixa", variaveis.diasIsentosMulta3);
+		variaveis.inserirDescontosMulta("descMultaFaixa", variaveis.descontoMulta3);
+		variaveis.selecionarMultaSobrePrincipal("multaSobreFaixa", "P");
+		variaveis.clicarComissãoMensalParmanencia("mensalTaxaFaixa");
+		variaveis.desmarcarUsarTaxaContrato("moraUsarTxContrato");
+		variaveis.inserirComissãoPermanencia("percComissaoFaixa", variaveis.comissaoPermanencia3);
+		variaveis.inserirDiasIsentosComissão ("diasComissaoFaixa", variaveis.diasIsentoComissao3);
+		variaveis.inserirDescontoComissão("descComissaoFaixa", variaveis.descontoComissao3);
+		variaveis.clicarLinear("linearComissaoFaixa");
+		variaveis.selecionarComissãoSobrePrincipal("taxaSobreFaixa", "P");
+		variaveis.inserirHonoráriosVencidas("percVencidaHonorarioFaixa", variaveis.honorarioVencida3);
+		variaveis.inserirDiasIsentosHonorários("diasHonorarioFaixa", variaveis.diasIsentoHonorario3);
+		variaveis.inserirHonoráriosVincendas("percVincendaHonorarioFaixa", variaveis.honorarioVincenda3);
+		variaveis.inserirMínimaHonorário("percDescHono", variaveis.minima3);
+		variaveis.clicarOkID("confirmaFaixaCalculo");
+		variaveis.esperarCssSelector(".textoAlerta");
+		String mensagemSucesso = variaveis.mensagem(".textoAlerta");
+		variaveis.validarMensagem("INSERIDO com sucesso!", mensagemSucesso);
+		variaveis.clicarOkXpath("//*[@id=\'msgBoxContent\']/div/div[2]/a");
+		driver.quit();
+	}
+	
+	@Test
+	public void H_cadastraFaixaCalculoQuitacao_O_10() throws InterruptedException {
+		variaveis.esperarId("modificaNome");
+		variaveis.tabelaCalculoPC(variaveis.descricao);
+			Thread.sleep(1000);
+		variaveis.clicarBotãoParâmetroCálculoPC("modificaNome");
+			Thread.sleep(3000);
+		variaveis.clicarAbaFaixasDeCálculo("//*[@id=\'targetParametros\']/ul/li[2]/a");
+		variaveis.pesquisarDescrição("cmpProcurar", "btnProcurar", variaveis.descricaoQuitacao);
+		variaveis.clicarPrimeiroItemTabela("//*[@id=\'grid\']/table/tbody/tr[2]/td/div/div/table/tbody/tr[2]");
+		variaveis.clicarBotãoAdicionar("adciona");
+		variaveis.diasDe("diasDeFaixa", variaveis.de0);
+		variaveis.diasAte("diasAteFaixa", variaveis.ate10);
+		variaveis.inserirPMT("quantidadePmt", variaveis.PMT);
+		variaveis.inserirFaseAtualização("codigoFaixa");
+		variaveis.clicarNãoUtilizarDeságio("NUtilizarDesagio");
+		variaveis.inserirDescontoPrincipal("percentualFaixa", variaveis.descontoPrincipal);
+		variaveis.clicarDescontoPrincipal("principalFaixa");
+		variaveis.inserirDescontoPrincipalVincenda("percentualFaixaVincenda", variaveis.descontoPrincipalVincenda);
+		variaveis.desmarcarDescCustas("descCustasFaixa");
+		variaveis.desmarcarDefFaixaRisco("defFaixaRiscoFaixa");
+		variaveis.clicarJurosMensal("mensalFaixa");
+		variaveis.desmarcarUsarTaxaContrato("jurosUsarTxContrato");
+		variaveis.inserirJuros("percJurosFaixa", variaveis.juros);
+		variaveis.inserirDiasIsentosJuros ("diasJurosFaixa", variaveis.diasIsentosJuros);
+		variaveis.inserirDescontosJuros("descJurosFaixa", variaveis.descontoJuros);
+		variaveis.clicarLinear("linearFaixa");
+		variaveis.inserirAtrasoMinimoParcelas("atrasoMinimoNegociacao", variaveis.atrasoMínimoParcelas);
+		variaveis.selecionarJurosSobrePrincipal("jurosSobreFaixa", "P");
+		variaveis.desmarcarUsarTaxaContrato("multaUsarTxContrato");
+		variaveis.inserirMulta("percMultaFaixa", variaveis.multa);
+		variaveis.inserirDiasIsentosMulta("diasMultaFaixa", variaveis.diasIsentosMulta);
+		variaveis.inserirDescontosMulta("descMultaFaixa", variaveis.descontoMulta);
+		variaveis.selecionarMultaSobrePrincipal("multaSobreFaixa", "P");
+		variaveis.clicarComissãoMensalParmanencia("mensalTaxaFaixa");
+		variaveis.desmarcarUsarTaxaContrato("moraUsarTxContrato");
+		variaveis.inserirComissãoPermanencia("percComissaoFaixa", variaveis.comissaoPermanencia);
+		variaveis.inserirDiasIsentosComissão ("diasComissaoFaixa", variaveis.diasIsentoComissao);
+		variaveis.inserirDescontoComissão("descComissaoFaixa", variaveis.descontoComissao);
+		variaveis.clicarLinear("linearComissaoFaixa");
+		variaveis.selecionarComissãoSobrePrincipal("taxaSobreFaixa", "P");
+		variaveis.inserirHonoráriosVencidas("percVencidaHonorarioFaixa", variaveis.honorarioVencida);
+		variaveis.inserirDiasIsentosHonorários("diasHonorarioFaixa", variaveis.diasIsentoHonorario);
+		variaveis.inserirHonoráriosVincendas("percVincendaHonorarioFaixa", variaveis.honorarioVincenda);
+		variaveis.inserirMínimaHonorário("percDescHono", variaveis.minima);
+		variaveis.clicarOkID("confirmaFaixaCalculo");
+		variaveis.esperarCssSelector(".textoAlerta");
+		String mensagemSucesso = variaveis.mensagem(".textoAlerta");
+		variaveis.validarMensagem("INSERIDO com sucesso!", mensagemSucesso);
+		variaveis.clicarOkXpath("//*[@id=\'msgBoxContent\']/div/div[2]/a");
+		driver.quit();
+	}
+	
+	@Test
+	public void I_cadastraFaixaCalculoQuitacao_11_30() throws InterruptedException {
+		variaveis.esperarId("modificaNome");
+		variaveis.tabelaCalculoPC(variaveis.descricao);
+			Thread.sleep(1000);
+		variaveis.clicarBotãoParâmetroCálculoPC("modificaNome");
+		variaveis.esperarCssSelector("#targetParametros > ul > li:nth-child(2) > a");
+			Thread.sleep(3000);
+		variaveis.clicarAbaFaixasDeCálculo("//*[@id=\'targetParametros\']/ul/li[2]");
+		variaveis.pesquisarDescrição("cmpProcurar", "btnProcurar", variaveis.descricaoQuitacao);
+		variaveis.clicarPrimeiroItemTabela("//*[@id=\'grid\']/table/tbody/tr[2]/td/div/div/table/tbody/tr[2]");
+		variaveis.clicarBotãoAdicionar("adciona");
+		variaveis.diasDe("diasDeFaixa", variaveis.de11);
+		variaveis.diasAte("diasAteFaixa", variaveis.ate30);
+		variaveis.inserirPMT("quantidadePmt", variaveis.PMT2);
+		variaveis.inserirFaseAtualização("codigoFaixa");
+		variaveis.clicarNãoUtilizarDeságio("NUtilizarDesagio");
+		variaveis.inserirDescontoPrincipal("percentualFaixa", variaveis.descontoPrincipal2);
+		variaveis.clicarDescontoPrincipal("principalFaixa");
+		variaveis.inserirDescontoPrincipalVincenda("percentualFaixaVincenda", variaveis.descontoPrincipalVincenda2);
+		variaveis.desmarcarDescCustas("descCustasFaixa");
+		variaveis.desmarcarDefFaixaRisco("defFaixaRiscoFaixa");
+		variaveis.clicarJurosMensal("mensalFaixa");
+		variaveis.desmarcarUsarTaxaContrato("jurosUsarTxContrato");
+		variaveis.inserirJuros("percJurosFaixa", variaveis.juros2);
+		variaveis.inserirDiasIsentosJuros ("diasJurosFaixa", variaveis.diasIsentosJuros2);
+		variaveis.inserirDescontosJuros("descJurosFaixa", variaveis.descontoJuros2);
+		variaveis.clicarLinear("linearFaixa");
+		variaveis.inserirAtrasoMinimoParcelas("atrasoMinimoNegociacao", variaveis.atrasoMínimoParcelas2);
+		variaveis.selecionarJurosSobrePrincipal("jurosSobreFaixa", "P");
+		variaveis.desmarcarUsarTaxaContrato("multaUsarTxContrato");
+		variaveis.inserirMulta("percMultaFaixa", variaveis.multa2);
+		variaveis.inserirDiasIsentosMulta("diasMultaFaixa", variaveis.diasIsentosMulta2);
+		variaveis.inserirDescontosMulta("descMultaFaixa", variaveis.descontoMulta2);
+		variaveis.selecionarMultaSobrePrincipal("multaSobreFaixa", "P");
+		variaveis.clicarComissãoMensalParmanencia("mensalTaxaFaixa");
+		variaveis.desmarcarUsarTaxaContrato("moraUsarTxContrato");
+		variaveis.inserirComissãoPermanencia("percComissaoFaixa", variaveis.comissaoPermanencia2);
+		variaveis.inserirDiasIsentosComissão ("diasComissaoFaixa", variaveis.diasIsentoComissao2);
+		variaveis.inserirDescontoComissão("descComissaoFaixa", variaveis.descontoComissao2);
+		variaveis.clicarLinear("linearComissaoFaixa");
+		variaveis.selecionarComissãoSobrePrincipal("taxaSobreFaixa", "P");
+		variaveis.inserirHonoráriosVencidas("percVencidaHonorarioFaixa", variaveis.honorarioVencida2);
+		variaveis.inserirDiasIsentosHonorários("diasHonorarioFaixa", variaveis.diasIsentoHonorario2);
+		variaveis.inserirHonoráriosVincendas("percVincendaHonorarioFaixa", variaveis.honorarioVincenda2);
+		variaveis.inserirMínimaHonorário("percDescHono", variaveis.minima2);
+		variaveis.clicarOkID("confirmaFaixaCalculo");
+		variaveis.esperarCssSelector(".textoAlerta");
+		String mensagemSucesso = variaveis.mensagem(".textoAlerta");
+		variaveis.validarMensagem("INSERIDO com sucesso!", mensagemSucesso);
+		variaveis.clicarOkXpath("//*[@id=\'msgBoxContent\']/div/div[2]/a");
+		driver.quit();
+	}
+
+	@Test
+	public void J_cadastraFaixaCalculoQuitacao_31_99999999() throws InterruptedException {
+		variaveis.esperarId("modificaNome");
+		variaveis.tabelaCalculoPC(variaveis.descricao);
+			Thread.sleep(1000);
+		variaveis.clicarBotãoParâmetroCálculoPC("modificaNome");
+		variaveis.esperarCssSelector("#targetParametros > ul > li:nth-child(2) > a");
+			Thread.sleep(3000);
+		variaveis.clicarAbaFaixasDeCálculo("//*[@id=\'targetParametros\']/ul/li[2]/a");
+		variaveis.pesquisarDescrição("cmpProcurar", "btnProcurar", variaveis.descricaoQuitacao);
+		variaveis.clicarPrimeiroItemTabela("//*[@id=\'grid\']/table/tbody/tr[2]/td/div/div/table/tbody/tr[2]");
+		variaveis.clicarBotãoAdicionar("adciona");
+		variaveis.diasDe("diasDeFaixa", variaveis.de31);
+		variaveis.diasAte("diasAteFaixa", variaveis.ate99999999);
+		variaveis.inserirPMT("quantidadePmt", variaveis.PMT3);
+		variaveis.inserirFaseAtualização("codigoFaixa");
+		variaveis.clicarNãoUtilizarDeságio("NUtilizarDesagio");
+		variaveis.inserirDescontoPrincipal("percentualFaixa", variaveis.descontoPrincipal3);
+		variaveis.clicarDescontoPrincipal("principalFaixa");
+		variaveis.inserirDescontoPrincipalVincenda("percentualFaixaVincenda", variaveis.descontoPrincipalVincenda3);
+		variaveis.desmarcarDescCustas("descCustasFaixa");
+		variaveis.desmarcarDefFaixaRisco("defFaixaRiscoFaixa");
+		variaveis.clicarJurosMensal("mensalFaixa");
+		variaveis.desmarcarUsarTaxaContrato("jurosUsarTxContrato");
+		variaveis.inserirJuros("percJurosFaixa", variaveis.juros3);
+		variaveis.inserirDiasIsentosJuros ("diasJurosFaixa", variaveis.diasIsentosJuros3);
+		variaveis.inserirDescontosJuros("descJurosFaixa", variaveis.descontoJuros3);
+		variaveis.clicarLinear("linearFaixa");
+		variaveis.inserirAtrasoMinimoParcelas("atrasoMinimoNegociacao", variaveis.atrasoMínimoParcelas3);
+		variaveis.selecionarJurosSobrePrincipal("jurosSobreFaixa", "P");
+		variaveis.desmarcarUsarTaxaContrato("multaUsarTxContrato");
+		variaveis.inserirMulta("percMultaFaixa", variaveis.multa3);
+		variaveis.inserirDiasIsentosMulta("diasMultaFaixa", variaveis.diasIsentosMulta3);
+		variaveis.inserirDescontosMulta("descMultaFaixa", variaveis.descontoMulta3);
+		variaveis.selecionarMultaSobrePrincipal("multaSobreFaixa", "P");
+		variaveis.clicarComissãoMensalParmanencia("mensalTaxaFaixa");
+		variaveis.desmarcarUsarTaxaContrato("moraUsarTxContrato");
+		variaveis.inserirComissãoPermanencia("percComissaoFaixa", variaveis.comissaoPermanencia3);
+		variaveis.inserirDiasIsentosComissão ("diasComissaoFaixa", variaveis.diasIsentoComissao3);
+		variaveis.inserirDescontoComissão("descComissaoFaixa", variaveis.descontoComissao3);
+		variaveis.clicarLinear("linearComissaoFaixa");
+		variaveis.selecionarComissãoSobrePrincipal("taxaSobreFaixa", "P");
+		variaveis.inserirHonoráriosVencidas("percVencidaHonorarioFaixa", variaveis.honorarioVencida3);
+		variaveis.inserirDiasIsentosHonorários("diasHonorarioFaixa", variaveis.diasIsentoHonorario3);
+		variaveis.inserirHonoráriosVincendas("percVincendaHonorarioFaixa", variaveis.honorarioVincenda3);
+		variaveis.inserirMínimaHonorário("percDescHono", variaveis.minima3);
+		variaveis.clicarOkID("confirmaFaixaCalculo");
+		variaveis.esperarCssSelector(".textoAlerta");
+		String mensagemSucesso = variaveis.mensagem(".textoAlerta");
+		variaveis.validarMensagem("INSERIDO com sucesso!", mensagemSucesso);
+		variaveis.clicarOkXpath("//*[@id=\'msgBoxContent\']/div/div[2]/a");
+		driver.quit();
+	}
+}
